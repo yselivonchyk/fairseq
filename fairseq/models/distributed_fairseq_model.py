@@ -40,11 +40,8 @@ def DistributedFairseqModel(args, model, process_group=None):
         ddp_class = DDP
         init_kwargs = dict(
             module=model,
-            device_ids=[args.device_id],
-            output_device=args.device_id,
-            broadcast_buffers=args.broadcast_buffers,
+            device_ids=[hrg.get_local_rank()],
             bucket_cap_mb=args.bucket_cap_mb,
-            process_group=process_group,
         )
         # Maintain backward compatibility
         if 'check_reduction' in inspect.getargspec(ddp_class)[0]:
@@ -55,10 +52,7 @@ def DistributedFairseqModel(args, model, process_group=None):
         ddp_class = LegacyDistributedDataParallel
         ddp_class = DDP
         init_kwargs = dict(
-            module=model,
-            world_size=args.distributed_world_size,
-            buffer_size=2**28,
-            process_group=process_group,
+            module=model
         )
     elif args.distributed_wrapper == 'SlowMo':
         if _GOSSIP_DISABLED:
