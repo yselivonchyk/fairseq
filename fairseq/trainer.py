@@ -852,6 +852,7 @@ class Trainer(object):
 
     def _check_grad_norms(self, grad_norm):
         """Check that grad norms are consistent across workers."""
+        return
         if self._grad_norm_buf is not None:
             self._grad_norm_buf.zero_()
             self._grad_norm_buf[self.data_parallel_rank] = grad_norm
