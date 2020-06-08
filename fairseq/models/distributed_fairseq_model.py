@@ -10,6 +10,7 @@ import torch.nn as nn
 from fairseq.legacy_distributed_data_parallel import LegacyDistributedDataParallel
 from fairseq.models import BaseFairseqModel
 
+import herring.torch as hrg
 from herring.torch.parallel import DistributedDataParallel as DDP
 
 
