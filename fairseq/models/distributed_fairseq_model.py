@@ -50,11 +50,14 @@ def DistributedFairseqModel(args, model, process_group=None):
         if 'find_unused_parameters' in inspect.getargspec(ddp_class)[0]:
             init_kwargs['find_unused_parameters'] = args.find_unused_parameters
     elif args.distributed_wrapper == 'DDP' and args.ddp_backend == 'no_c10d':
+        raise NotImplementedError()
         ddp_class = LegacyDistributedDataParallel
-        ddp_class = DDP
         init_kwargs = dict(
-            module=model
-        )
+            module=model,
+            world_size=args.distributed_world_size,
+            buffer_size=2**28,
+            process_group=process_group
+        )        
     elif args.distributed_wrapper == 'SlowMo':
         if _GOSSIP_DISABLED:
             raise ImportError(
