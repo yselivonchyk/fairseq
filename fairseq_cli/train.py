@@ -213,7 +213,7 @@ def train(args, trainer, task, epoch_itr):
         num_updates = trainer.get_num_updates()
         if num_updates % args.log_interval == 0:
             stats = get_training_stats(metrics.get_smoothed_values('train_inner'))
-            progress.log(stats, tag='train_inner_{}'.format(hm.get_rank()), step=num_updates)
+            progress.log(stats, tag='train_inner_{}'.format(hrg.get_rank()), step=num_updates)
 
             # reset mid-epoch stats after each log interval
             # the end-of-epoch stats will still be preserved
