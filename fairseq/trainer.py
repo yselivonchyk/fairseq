@@ -469,11 +469,11 @@ class Trainer(object):
             # already normalizes by the number of GPUs. Thus we get
             # (sum_of_gradients / sample_size).
             if not self.args.use_bmuf:
-                self.optimizer.multiply_grads(self.data_parallel_world_size / sample_size)
+                self.optimizer.multiply_grads(hrg.get_world_size() / sample_size)
             elif sample_size > 0:  # BMUF needs to check sample size
                 num = self.data_parallel_world_size if self._sync_stats() else 1
                 # self.optimizer.multiply_grads(num / sample_size)
-                self.optimizer.multiply_grads(hrg.get_world_size() / sample_size)
+                self.optimizer.multiply_grads(num / sample_size)
 
                 # clip grads
             grad_norm = self.clip_grad_norm(self.args.clip_norm)
