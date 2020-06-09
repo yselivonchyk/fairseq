@@ -13,6 +13,7 @@ import torch
 import queue
 import logging
 from threading import Thread
+import herring.torch as hrg
 from . import data_utils
 
 logger = logging.getLogger(__name__)
@@ -204,6 +205,9 @@ class EpochBatchIterator(EpochBatchIterating):
         num_workers=0, epoch=1, buffer_size=0
     ):
         assert isinstance(dataset, torch.utils.data.Dataset)
+        
+        num_shards = hrg.get_world_size()
+        
         self.dataset = dataset
         self.collate_fn = collate_fn
         self.frozen_batches = tuple(batch_sampler)
