@@ -134,7 +134,9 @@ class Trainer(object):
                 and self.data_parallel_world_size > 1
                 and not self.args.use_bmuf
                 and not self.tpu
-            ):
+            ) or self.args.distributed_backend == "herring":
+                print("CHECK: Data parallel world size (expect >1): ", self.data_parallel_world_size)
+                print("CHECK: Has a cretario (expect False): ", utils.has_parameters(self._criterion))
                 self._wrapped_criterion = models.DistributedFairseqModel(
                     self.args, self._criterion,
                     process_group=self.data_parallel_process_group
