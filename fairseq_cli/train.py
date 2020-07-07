@@ -251,6 +251,7 @@ def validate_and_save(args, trainer, task, epoch_itr, valid_subsets, end_of_epoc
             or (end_of_epoch and epoch_itr.epoch % args.validate_interval == 0)
         )
         and not args.disable_validation
+        and hrg.get_rank() == 0
     )
 
     # Validate
