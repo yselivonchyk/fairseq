@@ -362,6 +362,7 @@ def add_dataset_args(parser, train=False, gen=False):
     # fmt: on
     return group
 
+import herring.torch as hrg
 
 def add_distributed_training_args(parser, default_world_size=None):
     group = parser.add_argument_group("Distributed training")
@@ -371,7 +372,7 @@ def add_distributed_training_args(parser, default_world_size=None):
     group.add_argument('--distributed-world-size', type=int, metavar='N',
                        default=default_world_size,
                        help='total number of GPUs across all nodes (default: all visible GPUs)')
-    group.add_argument('--distributed-rank', default=0, type=int,
+    group.add_argument('--distributed-rank', default=hrg.get_rank(), type=int,
                        help='rank of the current worker')
     group.add_argument('--distributed-backend', default='nccl', type=str,
                        help='distributed backend')
